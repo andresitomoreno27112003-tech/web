@@ -762,7 +762,7 @@
 
             try {
                 // 4. Enviar el historial COMPLETO al backend
-                const response = await fetch('web-9w2264oqk-floristeria-valera.vercel.app', {
+                const response = await fetch('web-9w2264oqk-floristeria-valera.vercel.app/api/chat', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ historial: conversationHistory })
