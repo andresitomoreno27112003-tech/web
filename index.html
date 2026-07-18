@@ -1,0 +1,882 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Compra y Venta de Flores Calzones | Envío de Flores a Barquisimeto</title>
+    <!-- Google Fonts: Outfit (modern sans-serif) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary: #1da871; /* Verde Bosque Imperial */
+            --primary-light: #164834;
+            --accent: #164b36; /* Dorado Champagne */
+            --accent-hover: #b4966e;
+            --bg-site: #faf8f5; /* Crema Orgánico */
+            --card-bg: #ffffff;
+            --text-main: #2b302c;
+            --text-muted: #5e6661;
+            --success: #2e7d32; /* Verde Éxito */
+            --shadow-sm: 0 4px 6px -1px rgba(0,0,0,0.05), 0 2px 4px -1px rgba(0,0,0,0.03);
+            --shadow-md: 0 10px 15px -3px rgba(15, 52, 37, 0.08), 0 4px 6px -2px rgba(15, 52, 37, 0.04);
+            --shadow-lg: 0 20px 25px -5px rgba(15, 52, 37, 0.12), 0 10px 10px -5px rgba(15, 52, 37, 0.06);
+        }
+
+        * { 
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+       body {
+    font-family: 'Outfit', sans-serif;
+    /* Mantenemos tu color crema de fondo como base por si la imagen tarda en cargar */
+    background-color: var(--bg-site); 
+    /* Añadimos una imagen elegante de fondo */
+    background-image: linear-gradient(rgba(250, 248, 245, 0.10), rgba(250, 248, 245, 0.10)), 
+                      url('https://wallpapers.com/images/hd/enchanted-forest-waterfall-scene-jpg-de9i6zhndzqmkd9q.jpg');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed; /* Mantiene el fondo quieto al hacer scroll */
+    color: var(--text-main);
+    line-height: 1.6;
+    overflow-x: hidden;
+}
+
+        /* Barra de Despacho Informativa */
+        .aviso-ruta {
+            background: linear-gradient(135deg, #1da871, #000000);
+            color: white;
+            text-align: right;
+            padding: 14px 20px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            letter-spacing: 0.5px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: relative;
+            z-index: 10;
+        }
+
+        /* Header con estética premium */
+        header {
+            background: linear-gradient(180deg, var(--primary) 0%, var(--primary-light) 100%);
+            color: white;
+            padding: 60px 20px 50px 20px;
+            text-align: center;
+            position: relative;
+            border-bottom: 3px solid var(--accent);
+        }
+
+        header h1 {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+            letter-spacing: -0.5px;
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.15);
+        }
+
+        header p {
+            font-size: 1.1rem;
+            font-weight: 300;
+            color: rgba(255, 255, 255, 0.85);
+            max-width: 600px;
+            margin: 0 auto;
+            letter-spacing: 0.5px;
+        }
+
+        /* Contenedor Principal */
+        .main-container {
+            max-width: 1300px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        /* Sección de Filtros */
+        .filter-section {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            margin-bottom: 35px;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            background-color: white;
+            border: 1px solid #e0dbd5;
+            color: var(--primary);
+            padding: 10px 24px;
+            border-radius: 30px;
+            font-size: 0.95rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .filter-btn:hover {
+            border-color: var(--accent);
+            transform: translateY(-2px);
+        }
+
+        .filter-btn.active {
+            background-color: var(--primary);
+            color: white;
+            border-color: var(--primary);
+            box-shadow: 0 4px 12px rgba(15, 52, 37, 0.2);
+        }
+
+        /* Grid de Catálogo */
+        .catalogo-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 30px;
+            padding: 10px 0;
+        }
+
+        /* Tarjeta de Producto con Hover */
+        .producto-card {
+            background-color: var(--card-bg);
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: var(--shadow-md);
+            border: 1px solid rgba(224, 219, 213, 0.5);
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+            height: 380px;
+        }
+
+        .producto-card:hover {
+            transform: translateY(-6px);
+            box-shadow: var(--shadow-lg);
+            border-color: var(--accent);
+        }
+
+        /* Contenedor de Imagen */
+        .image-container {
+            width: 100%;
+            height: 250px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .image-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.6s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+
+        .producto-card:hover .image-container img {
+            transform: scale(1.08);
+        }
+
+        /* Overlay con Glassmorphism para Descripción */
+        .desc-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 250px;
+            background: rgba(15, 52, 37, 0.82);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            color: white;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 24px;
+            text-align: center;
+            opacity: 0;
+            transform: translateY(10px);
+            transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+            z-index: 2;
+        }
+
+        /* Activar overlay al hacer hover */
+        .producto-card:hover .desc-overlay,
+        .producto-card.active-mobile .desc-overlay {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .desc-overlay p {
+            font-size: 0.95rem;
+            font-weight: 300;
+            line-height: 1.5;
+            margin-bottom: 20px;
+        }
+
+        /* Botón de Acción en el Overlay */
+        .quick-order-btn {
+            background-color: var(--accent);
+            color: var(--primary);
+            border: none;
+            padding: 10px 20px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .quick-order-btn:hover {
+            background-color: white;
+            color: var(--primary);
+            transform: scale(1.05);
+        }
+
+        /* Detalles de Producto */
+        .card-details {
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            flex-grow: 1;
+            background-color: white;
+            position: relative;
+            z-index: 3;
+            border-top: 1px solid rgba(224, 219, 213, 0.3);
+        }
+
+        .card-details h3 {
+            font-size: 1.15rem;
+            font-weight: 600;
+            color: var(--primary);
+            margin-bottom: 6px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .card-info-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .card-price {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--success);
+        }
+
+        .card-price-extra {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            font-weight: 400;
+        }
+
+        .tap-hint {
+            display: none;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            font-style: italic;
+            margin-top: 4px;
+        }
+
+        /* Botón de Chat Flotante */
+        #chat-btn {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: linear-gradient(135deg, var(--success), #1b5e20);
+            color: white;
+            border: none;
+            padding: 16px 28px;
+            border-radius: 50px;
+            font-family: inherit;
+            font-size: 1.05rem;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 8px 24px rgba(46, 125, 50, 0.3);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            z-index: 99;
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+
+        #chat-btn:hover {
+            transform: scale(1.05) translateY(-2px);
+            box-shadow: 0 12px 30px rgba(46, 125, 50, 0.4);
+        }
+
+        /* Ventana de Chat Widget (Glassmorphism sutil) */
+        #chat-window {
+            position: fixed;
+            bottom: 100px;
+            right: 30px;
+            width: 380px;
+            height: 520px;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-radius: 20px;
+            box-shadow: var(--shadow-lg);
+            display: none;
+            flex-direction: column;
+            overflow: hidden;
+            z-index: 100;
+            border: 1px solid rgba(15, 52, 37, 0.15);
+            animation: slideUp 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Encabezado del Chat */
+        #chat-header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+            color: white;
+            padding: 18px 22px;
+            font-weight: 600;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid var(--accent);
+        }
+
+        #chat-header .title-area {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        #chat-header .bot-status {
+            font-size: 0.75rem;
+            color: rgba(255, 255, 255, 0.7);
+            font-weight: 300;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        #chat-header .bot-status::before {
+            content: "";
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            background-color: #4caf50;
+            border-radius: 50%;
+        }
+
+        #chat-header .close-btn {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.4rem;
+            cursor: pointer;
+            opacity: 0.8;
+            transition: opacity 0.2s;
+        }
+
+        #chat-header .close-btn:hover {
+            opacity: 1;
+        }
+
+        /* Mensajes de Chat */
+        #chat-messages {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+            background: #f7f9f8;
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            scroll-behavior: smooth;
+        }
+
+        /* Burbujas de Chat */
+        .msg {
+            padding: 12px 16px;
+            border-radius: 16px;
+            max-width: 85%;
+            font-size: 0.92rem;
+            line-height: 1.45;
+            box-shadow: var(--shadow-sm);
+            word-wrap: break-word;
+            animation: scaleIn 0.25s cubic-bezier(0.18, 0.89, 0.32, 1.28);
+        }
+
+        @keyframes scaleIn {
+            from { opacity: 0; transform: scale(0.95); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        .msg.bot {
+            background: white;
+            align-self: flex-start;
+            color: var(--text-main);
+            border-bottom-left-radius: 4px;
+            border: 1px solid rgba(15, 52, 37, 0.05);
+        }
+
+        .msg.user {
+            background: var(--primary);
+            align-self: flex-end;
+            color: white;
+            border-bottom-right-radius: 4px;
+        }
+
+        /* Caja de Entrada de Mensajes */
+        #chat-input-box {
+            display: flex;
+            border-top: 1px solid rgba(224, 219, 213, 0.6);
+            background-color: white;
+            padding: 10px;
+            align-items: center;
+        }
+
+        #chat-input {
+            flex: 1;
+            padding: 12px 16px;
+            border: 1px solid #e0dbd5;
+            border-radius: 24px;
+            outline: none;
+            font-family: inherit;
+            font-size: 0.92rem;
+            transition: border-color 0.2s;
+        }
+
+        #chat-input:focus {
+            border-color: var(--primary);
+        }
+
+        #send-btn {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            margin-left: 10px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background-color 0.2s, transform 0.1s;
+        }
+
+        #send-btn:hover {
+            background-color: var(--primary-light);
+            transform: scale(1.05);
+        }
+
+        #send-btn svg {
+            fill: white;
+            width: 18px;
+            height: 18px;
+        }
+
+        .whatsapp-order-btn {
+            align-self: center;
+            background-color: #25d366;
+            color: white;
+            border: none;
+            border-radius: 12px;
+            padding: 12px 16px;
+            font-family: inherit;
+            font-size: 0.92rem;
+            font-weight: 700;
+            cursor: pointer;
+            box-shadow: var(--shadow-sm);
+            transition: transform 0.15s ease, background-color 0.2s ease;
+            width: calc(100% - 24px);
+            max-width: 330px;
+        }
+
+        .whatsapp-order-btn:hover {
+            background-color: #1fb458;
+            transform: translateY(-1px);
+        }
+
+        /* Scrollbar Personalizado */
+        #chat-messages::-webkit-scrollbar {
+            width: 6px;
+        }
+        #chat-messages::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        #chat-messages::-webkit-scrollbar-thumb {
+            background-color: rgba(15, 52, 37, 0.15);
+            border-radius: 10px;
+        }
+
+        /* Adaptabilidad Móvil */
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 1.7rem;
+            }
+            .catalogo-grid {
+                grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+                gap: 20px;
+            }
+            .producto-card {
+                height: 330px;
+            }
+            .image-container {
+                height: 200px;
+            }
+            .desc-overlay {
+                height: 200px;
+                padding: 15px;
+            }
+            .desc-overlay p {
+                font-size: 0.85rem;
+                margin-bottom: 12px;
+            }
+            .tap-hint {
+                display: block;
+            }
+            #chat-window {
+                width: calc(100% - 40px);
+                bottom: 90px;
+                right: 20px;
+                height: 460px;
+            }
+            #chat-btn {
+                bottom: 20px;
+                right: 20px;
+                padding: 14px 22px;
+                font-size: 0.95rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Aviso de despachos programados -->
+    <div class="aviso-ruta">
+        📢 AVISO DE LOGÍSTICA: Flores cultivadas en La Mesa de Esnujaque y Bailadores, despachadas desde Valera. Entregas en Barquisimeto EXCLUSIVAMENTE los días MIÉRCOLES Y JUEVES.
+    </div>
+
+    <!-- Encabezado de la tienda -->
+    <header>
+        <h1>Compra y Venta de Flores Calzones</h1>
+        <p>Frescura y naturaleza directa a tu puerta en Barquisimeto, Estado Lara</p>
+    </header>
+
+    <div class="main-container">
+        <!-- Barra de Filtros -->
+        <div class="filter-section">
+            <button class="filter-btn active" onclick="filtrarCategoria('todos')">Todos los Productos</button>
+            <button class="filter-btn" onclick="filtrarCategoria('flores')">Flores</button>
+            <button class="filter-btn" onclick="filtrarCategoria('follajes')">Follajes y Relleno</button>
+        </div>
+
+        <!-- Contenedor del Catálogo -->
+        <section class="catalogo-grid" id="catalogo-container">
+            <!-- Las tarjetas se generan dinámicamente con JS -->
+        </section>
+    </div>
+
+    <!-- Botón Flotante para abrir Chat -->
+    <button id="chat-btn" onclick="toggleChat()">
+        <svg style="width:24px;height:24px" viewBox="0 0 24 24">
+            <path fill="currentColor" d="M12,2A10,10 0 0,0 2,12C2,14.14 2.74,16.11 4,17.66L2.43,22.28L7.2,20.8A9.97,9.97 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M12,4A8,8 0 0,1 20,12A8,8 0 0,1 12,20C10.66,20 9.42,19.67 8.32,19.09L8.06,18.95L5.19,19.84L6.11,17L5.94,16.7C5.32,15.65 5,14.42 5,12A8,8 0 0,1 12,4Z" />
+        </svg>
+        <span>Pedir con Asistente IA</span>
+    </button>
+
+    <!-- Caja del Chat Asistente Virtual -->
+    <div id="chat-window">
+        <div id="chat-header">
+            <div class="title-area">
+                <span>Asistente de Pedidos (IA)</span>
+                <span class="bot-status">En línea y listo</span>
+            </div>
+            <button class="close-btn" onclick="toggleChat()">✖</button>
+        </div>
+        <div id="chat-messages">
+            <div class="msg bot">¡Hola! Bienvenido a Compra y Venta de Flores Calzones. Te ayudaré a tomar y cotizar tu pedido de flores o follajes cultivados en Bailadores y La Mesa de Esnujaque para Barquisimeto. Recuerda que realizamos las entregas únicamente los miércoles y jueves. ¿Qué deseas ordenar hoy? Al finalizar también te pediré tu número de teléfono para confirmar.</div>
+        </div>
+        <div id="chat-input-box">
+            <input type="text" id="chat-input" placeholder="Escribe tu mensaje aquí..." onkeypress="evaluarEnter(event)">
+            <button id="send-btn" onclick="enviarMensaje()">
+                <svg viewBox="0 0 24 24">
+                    <path d="M2,21L23,12L2,3V10L17,12L2,14V21Z" />
+                </svg>
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // Catálogo de Productos Oficial
+        const productos = [
+            { id: "soliaster", categoria: "follajes", nombre: "Soliaster", precio: 3, desc: "Follaje silvestre de espigas amarillas brillantes, excelente relleno floral.", img: "assets/soliaster.jpg" },
+            { id: "aster", categoria: "follajes", nombre: "Aster", precio: 3, desc: "Pequeñas y delicadas margaritas silvestres en tonos lila, ideales para rellenar.", img: "assets/aster.jpg" },
+            { id: "rosa", categoria: "flores", nombre: "Rosa", precio: 12, desc: "Paquete de rosas clásicas premium. El símbolo universal del amor.", img: "https://wallpapers.com/images/hd/beautiful-roses-pictures-4000-x-2667-pmxjpbnlgh3y5wo3.jpg" },
+            { id: "margarita", categoria: "flores", nombre: "Margarita", precio: 6, desc: "Ramillete de alegres margaritas blancas con centros dorados muy radiantes.", img: "https://images.unsplash.com/photo-1560717789-0ac7c58ac90a?w=500" },
+            { id: "astromelia", categoria: "flores", nombre: "Astromelia", precio: 3, desc: "Lirios de campo coloridos y vistosos. Excelente duración en jarrón.", img: "https://www.floresdeocoa.cl/cdn/shop/products/740.jpg?v=1602636582&width=1701" },
+            { id: "rusco", categoria: "follajes", nombre: "Rusco", precio: 3, desc: "Hojas verdes intensas y brillantes de alta durabilidad, base de arreglos.", img: "https://www.comercializadoraalameda.com/wp-content/uploads/2022/11/WhatsApp-Image-2024-11-20-at-11.44.39-AM.jpeg" },
+            { id: "helecho-cuero", categoria: "follajes", nombre: "Helecho cuero", precio: 3, desc: "Helecho de gran textura y cuerpo, ideal para dar presencia y volumen.", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRJQ1sV0xVMsSS4GiDz5vlw-8FKd-ThleFHJbaapNvpm3mDcerHCoCNohnC&s=10" },
+            { id: "rosa-bebe", categoria: "flores", nombre: "Rosa bebé", precio: 8, desc: "Mini ramilletes de rosas delicadas de botón pequeño en colores suaves.", img: "https://image.made-in-china.com/202f0j00ozrcHgPsOGbL/80-200cm-Baby-Seeding-Rose-Flower-Tree-Bonsai-Shipping-Garden-Live-Plant-Middle-Seedling-Garden-Rosa.webp" },
+            { id: "yitson", categoria: "follajes", nombre: "Yitson (Gipso)", precio: 8, desc: "Diminutas flores blancas que dan un efecto nuboso y romántico a los ramos.", img: "https://www.infoagro.com/documentos/images/1298_cultivo_paniculata.jpg" },
+            { id: "pino", categoria: "follajes", nombre: "Pino", precio: 1, desc: "Ramilletes de pino verde. Se ofrece por bulto a $10 o paquete individual a $1.", img: "https://www.honduras.com/wp-content/uploads/2023/05/dia-del-arbol-en-Honduras.jpg", extraInfo: "Bulto: $10 | Paquete: $1" },
+            { id: "girasol", categoria: "flores", nombre: "Girasol", precio: 6, desc: "Flor radiante de pétalos amarillos y gran tamaño que transmite luz y alegría.", img: "https://images.unsplash.com/photo-1597848212624-a19eb35e2651?w=500" },
+            { id: "hiedra", categoria: "follajes", nombre: "Hiedra / Yedra", precio: 3, desc: "Follaje colgante con hojas elegantes de forma estrellada muy natural.", img: "https://plantas.florpedia.com/images/plantas-trepadoras-yedra.jpg?phpMyAdmin=RTRRHfA2I9v%2CQw0gg%2CdyQfi11e6" },
+            { id: "gerbera", categoria: "flores", nombre: "Gerbera", precio: 10, desc: "Flores simétricas gigantes de colores intensos, alegres y muy modernos.", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT7v4rqTD1TprObezTx1VrW5MJQ1zRWyDbkzbyZq1uLOh69n9vZHUBgr3UJ&s=10" },
+            { id: "clavel", categoria: "flores", nombre: "Clavel", precio: 8, desc: "Flores clásicas de pétalos ondulados muy compactos y excelente aroma.", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRsve0a3bI17uPDh7QRq_OUXmwVzXRvvIrmNSWYrONqaraigjcjcqCRe1A&s=10" },
+            { id: "aves-del-paraiso", categoria: "flores", nombre: "Aves de paraíso", precio: 4, desc: "Flores tropicales de gran tamaño inspiradas en el ave exótica del mismo nombre.", img: "https://www.picturethisai.com/image-handle/website_cmsname/image/1080/154043219770867749.jpeg?x-oss-process=image/format,webp/resize,s_800&v=1.0" },
+            { id: "calas", categoria: "flores", nombre: "Calas", precio: 4, desc: "Lirios estilizados de aspecto puro y curvas suaves muy distinguidas.", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSaIZZ4sGM9o_IIcMyWQgvRZRL0UtRX9UQ89hQJ8RpmRCkrfe6SzxaHwWB-&s=10" },
+            { id: "nido-de-amor", categoria: "follajes", nombre: "Nido de amor", precio: 5, desc: "Follaje tupido de hojas redondas y compactas de hermoso color verde.", img: "https://images.unsplash.com/photo-1463936575829-25148e1db1b8?w=500" },
+            { id: "estatis", categoria: "flores", nombre: "Estatis", precio: 3, desc: "Flores naturales de tonos morados que mantienen su color incluso tras secarse.", img: "https://mullerseeds.com/app/uploads/2021/09/LI-3699-05.jpg" },
+            { id: "nardo", categoria: "flores", nombre: "Nardo", precio: 7, desc: "Varas con hermosas flores blancas que destacan por su exquisita fragancia.", img: "https://lacasadellabrador.com/wp-content/uploads/2025/12/Tuberculos-de-Nardo-Flores.jpg" },
+            { id: "helecho-comun", categoria: "follajes", nombre: "Helecho", precio: 1, desc: "Follaje de helecho verde clásico, ideal como relleno básico de volumen.", img: "https://blog.dutch-bulbs.com/wp-content/uploads/2024/08/guide-for-ferns.jpg" },
+            { id: "pino-limon", categoria: "follajes", nombre: "Pino limón", precio: 2, desc: "Pino ornamental con un agradable y fresco aroma cítrico y color verde-lima.", img: "https://viveroverdevida.com.ar/wp-content/uploads/2022/09/Pino-Lemon.jpg" },
+            { id: "agapantos", categoria: "flores", nombre: "Agapantos", precio: 3, desc: "Bellas inflorescencias esféricas de flores en color azul violáceo.", img: "https://upload.wikimedia.org/wikipedia/commons/3/3e/Purple_Agapantha.JPG" },
+            { id: "pinopios", categoria: "follajes", nombre: "Pinopios", precio: 6, desc: "Se caracterizan por su forma redonda y esponjosa, con pequeños pétalos y largos pistilos que sobresalen dándoles un aspecto exótico y moderno.", img: "https://m.media-amazon.com/images/I/81nIrAFuJXL._AC_UF350,350_QL80_.jpg" }
+        ];
+
+        const container = document.getElementById('catalogo-container');
+
+        // Renderizar el catálogo en pantalla
+        function renderCatalogo(lista) {
+            container.innerHTML = "";
+            lista.forEach(prod => {
+                const card = document.createElement('div');
+                card.classList.add('producto-card');
+                
+                // Evento para móviles (toggle active en toque)
+                card.addEventListener('click', (e) => {
+                    if (window.innerWidth <= 768) {
+                        // Si hace clic en el botón, no toggleamos el active
+                        if (e.target.closest('.quick-order-btn')) return;
+                        
+                        const wasActive = card.classList.contains('active-mobile');
+                        document.querySelectorAll('.producto-card').forEach(c => c.classList.remove('active-mobile'));
+                        if (!wasActive) card.classList.add('active-mobile');
+                    }
+                });
+
+                const priceDisplay = prod.extraInfo ? prod.extraInfo : `$${prod.precio}.00`;
+
+                card.innerHTML = `
+                    <div class="image-container">
+                        <img src="${prod.img}" alt="${prod.nombre}" loading="lazy">
+                        <div class="desc-overlay">
+                            <p>${prod.desc}</p>
+                            <button class="quick-order-btn" onclick="comprarRapido('${prod.nombre}')">
+                                <svg style="width:16px;height:16px" viewBox="0 0 24 24">
+                                    <path fill="currentColor" d="M12,2A10,10 0 0,0 2,12C2,14.14 2.74,16.11 4,17.66L2.43,22.28L7.2,20.8A9.97,9.97 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M12,4A8,8 0 0,1 20,12A8,8 0 0,1 12,20C10.66,20 9.42,19.67 8.32,19.09L8.06,18.95L5.19,19.84L6.11,17L5.94,16.7C5.32,15.65 5,14.42 5,12A8,8 0 0,1 12,4Z" />
+                                </svg>
+                                Pedir con IA
+                            </button>
+                        </div>
+                    </div>
+                    <div class="card-details">
+                        <h3>${prod.nombre}</h3>
+                        <div class="card-info-row">
+                            <span class="card-price">${priceDisplay}</span>
+                        </div>
+                        <span class="tap-hint">Toca para ver detalles</span>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        // Inicializar el catálogo completo
+        renderCatalogo(productos);
+
+        // Filtrar Categorías
+        function filtrarCategoria(cat) {
+            // Actualizar clase del botón activo
+            document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+
+            if (cat === 'todos') {
+                renderCatalogo(productos);
+            } else {
+                const filtrados = productos.filter(p => p.categoria === cat);
+                renderCatalogo(filtrados);
+            }
+        }
+
+        // Acción de Botón Pedir con IA
+        function comprarRapido(nombreFlor) {
+            // 1. Abrir chat si está cerrado
+            const chatWin = document.getElementById('chat-window');
+            chatWin.style.display = 'flex';
+
+            // 2. Insertar texto en el input
+            const input = document.getElementById('chat-input');
+            input.value = `Hola, me gustaría ordenar ${nombreFlor}. ¿Me indicas los detalles?`;
+            
+            // 3. Dar foco al input
+            input.focus();
+        }
+
+        // Elementos del Chat
+        const chatWindow = document.getElementById('chat-window');
+        const chatMessages = document.getElementById('chat-messages');
+        const chatInput = document.getElementById('chat-input');
+        const numeroWhatsappDueno = "584247667173";
+        const marcadorPedidoCompleto = "[[PEDIDO_COMPLETO]]";
+        const marcadorResumenWhatsapp = "[[RESUMEN_WHATSAPP]]";
+        const marcadorFinResumenWhatsapp = "[[FIN_RESUMEN_WHATSAPP]]";
+
+        // Historial de conversación para que la IA recuerde todo el contexto
+        let conversationHistory = [];
+        let resumenPedidoWhatsapp = "";
+
+        function toggleChat() {
+            chatWindow.style.display = (chatWindow.style.display === 'flex') ? 'none' : 'flex';
+            if (chatWindow.style.display === 'flex') {
+                chatInput.focus();
+            }
+        }
+
+        function evaluarEnter(e) {
+            if (e.key === 'Enter') enviarMensaje();
+        }
+
+        async function enviarMensaje() {
+            const texto = chatInput.value.trim();
+            if (!texto) return;
+
+            // 1. Mostrar mensaje del usuario en pantalla
+            mostrarMensaje(texto, 'user');
+            chatInput.value = '';
+
+            // 2. Agregar mensaje del usuario al historial
+            conversationHistory.push({ role: "user", content: texto });
+
+            // 3. Mostrar "Pensando..."
+            const repuestaBotId = mostrarMensaje('Pensando...', 'bot');
+
+            try {
+                // 4. Enviar el historial COMPLETO al backend
+                const response = await fetch('http://localhost:3000/api/chat', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ historial: conversationHistory })
+                });
+
+                const data = await response.json();
+                
+                const respuestaCompleta = data.respuesta || "";
+                const pedidoCompleto = respuestaCompleta.includes(marcadorPedidoCompleto);
+                const resumenExtraido = extraerResumenWhatsapp(respuestaCompleta);
+                let respuestaVisible = quitarBloqueResumenWhatsapp(respuestaCompleta)
+                    .replace(marcadorPedidoCompleto, "")
+                    .replace(marcadorResumenWhatsapp, "")
+                    .replace(marcadorFinResumenWhatsapp, "")
+                    .trim();
+
+                if (resumenExtraido) {
+                    resumenPedidoWhatsapp = resumenExtraido;
+                }
+
+                // 5. Mostrar respuesta de la IA
+                repuestaBotId.innerText = respuestaVisible;
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+
+                // 6. Agregar respuesta del bot al historial
+                conversationHistory.push({ role: "assistant", content: respuestaVisible });
+
+                if (pedidoCompleto) {
+                    mostrarBotonWhatsapp();
+                }
+
+            } catch (error) {
+                console.error("Error:", error);
+                repuestaBotId.innerText = "Disculpa, tengo un problema interno para procesar tu mensaje. Por favor, intenta de nuevo o revisa si el servidor está en línea.";
+            }
+        }
+
+        function mostrarMensaje(texto, emisor) {
+            const div = document.createElement('div');
+            div.classList.add('msg', emisor);
+            div.innerText = texto;
+            chatMessages.appendChild(div);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+            return div;
+        }
+
+        function mostrarBotonWhatsapp() {
+            const botonExistente = document.getElementById('whatsapp-order-btn');
+            if (botonExistente) botonExistente.remove();
+
+            const boton = document.createElement('button');
+            boton.id = 'whatsapp-order-btn';
+            boton.className = 'whatsapp-order-btn';
+            boton.type = 'button';
+            boton.innerText = 'Enviar pedido al dueño por WhatsApp';
+            boton.onclick = abrirWhatsappConPedido;
+            chatMessages.appendChild(boton);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        function abrirWhatsappConPedido() {
+            if (numeroWhatsappDueno === "584121234567") {
+                alert("Antes de enviar pedidos reales, cambia el numero de WhatsApp del dueño en el codigo.");
+            }
+
+            const ultimoResumen = conversationHistory
+                .filter((mensaje) => mensaje.role === "assistant")
+                .map((mensaje) => mensaje.content)
+                .pop() || "";
+
+            const textoWhatsapp = [
+                "Nuevo pedido desde la página web Compra y Venta de Flores Calzones",
+                "",
+                resumenPedidoWhatsapp || limpiarResumenPedido(ultimoResumen)
+            ].join("\n");
+
+            const url = `https://wa.me/${numeroWhatsappDueno}?text=${encodeURIComponent(textoWhatsapp)}`;
+            window.open(url, "_blank", "noopener,noreferrer");
+        }
+
+        function extraerResumenWhatsapp(texto) {
+            const inicio = texto.indexOf(marcadorResumenWhatsapp);
+            const fin = texto.indexOf(marcadorFinResumenWhatsapp);
+
+            if (inicio === -1 || fin === -1 || fin <= inicio) {
+                return "";
+            }
+
+            return texto
+                .slice(inicio + marcadorResumenWhatsapp.length, fin)
+                .trim();
+        }
+
+        function quitarBloqueResumenWhatsapp(texto) {
+            const inicio = texto.indexOf(marcadorResumenWhatsapp);
+            const fin = texto.indexOf(marcadorFinResumenWhatsapp);
+
+            if (inicio === -1 || fin === -1 || fin <= inicio) {
+                return texto;
+            }
+
+            return `${texto.slice(0, inicio)}${texto.slice(fin + marcadorFinResumenWhatsapp.length)}`;
+        }
+
+        function limpiarResumenPedido(texto) {
+            const lineas = texto.split("\n").map((linea) => linea.trim()).filter(Boolean);
+            const inicioResumen = lineas.findIndex((linea) => /resumen|productos/i.test(linea));
+            const lineasResumen = inicioResumen >= 0 ? lineas.slice(inicioResumen) : lineas;
+
+            return lineasResumen
+                .filter((linea) => !/buenas|gracias|confianza|a su orden|quede tranquilo|fresquitas/i.test(linea))
+                .join("\n")
+                .trim();
+        }
+    </script>
+</body>
+</html>
