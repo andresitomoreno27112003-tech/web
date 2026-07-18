@@ -762,12 +762,12 @@
 
             try {
                 // 4. Enviar el historial COMPLETO al backend
-                const response = await fetch('web-9w2264oqk-floristeria-valera.vercel.app/api/chat', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ historial: conversationHistory })
-                });
-
+               // Asegúrate de incluir el https:// completo al principio
+const response = await fetch('https://web-omega-five-51.vercel.app/api/chat', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ mensaje: text }) // o la variable de texto que uses
+});
                 const data = await response.json();
                 
                 const respuestaCompleta = data.respuesta || "";
