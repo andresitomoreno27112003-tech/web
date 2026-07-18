@@ -26,8 +26,8 @@ async function sendMessage() {
     chatInput.value = '';
 
     try {
-        // Petición al Backend (Servidor local por ahora)
-        const response = await fetch('http://localhost:3000/api/chat', {
+        // CAMBIO AQUÍ: Reemplaza la URL de abajo por la tuva de Vercel (manteniendo el /api/chat al final)
+        const response = await fetch('https://TU_PROYECTO_AQUÍ.vercel.app/api/chat', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ mensaje: text })
