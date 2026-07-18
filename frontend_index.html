@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Compra y Venta de Flores Calzones a Barquisimeto</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+    <header>
+        <h1>Compra y Venta de Flores Calzones</h1>
+        <p>Directo a Barquisimeto</p>
+    </header>
+
+    <div class="aviso-ruta">
+        ⚠️ IMPORTANTE: Flores cultivadas en Bailadores y La Mesa de Esnujaque, despachadas desde Valera. Las entregas en Barquisimeto se realizan EXCLUSIVAMENTE los días MIÉRCOLES Y JUEVES.
+    </div>
+
+    <section class="catalogo">
+        <div class="producto">
+            <img src="https://images.unsplash.com/photo-1561181286-d3fee7d55364?w=500" alt="Rosas">
+            <h3>Ramo de Rosas Premium</h3>
+            <p class="precio">$25.00</p>
+        </div>
+        <div class="producto">
+            <img src="https://images.unsplash.com/photo-1597848212624-a19eb35e2651?w=500" alt="Girasoles">
+            <h3>Arreglo de Girasoles</h3>
+            <p class="precio">$30.00</p>
+        </div>
+    </section>
+
+    <button id="btn-open-chat">💬 Hacer Pedido</button>
+
+    <div id="chat-widget" class="hidden">
+        <div id="chat-header">
+            <span>Asistente IA - Pedidos</span>
+            <button id="btn-close-chat">X</button>
+        </div>
+        <div id="chat-messages">
+            <div class="msg bot">¡Hola! Te ayudo con tu pedido. Recuerda que las entregas en Barquisimeto son solo los miércoles y jueves. ¿Qué flores deseas ordenar?</div>
+        </div>
+        <div id="chat-input-area">
+            <input type="text" id="chat-input" placeholder="Escribe tu mensaje aquí...">
+            <button id="btn-send">Enviar</button>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
