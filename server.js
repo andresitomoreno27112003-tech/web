@@ -80,20 +80,19 @@ No uses ese marcador si falta algún dato obligatorio.
 `;
 
 app.post('/api/chat', async (req, res) => {
-    const { historial } = req.body;
+    // CAMBIO: Si tu frontend envía "mensaje", lo atrapamos aquí directamente
+    const mensajeUsuario = req.body.mensaje || req.body.texto; 
+    
+    const mensajes = [
+        { role: "system", content: INSTRUCCIONES_DEL_BOT },
+        { role: "user", content: mensajeUsuario }
+    ];
+
     const MODELOS = [
         "tencent/hy3:free",
         "cohere/north-mini-code:free",
-        "nvidia/nemotron-3-nano-30b-a3b:free",
-        "openrouter/free",
         "google/gemma-4-31b-it:free",
         "meta-llama/llama-3.2-3b-instruct:free"
-    ];
-
-    // Construir mensajes: instrucciones del sistema + historial completo de la conversación
-    const mensajes = [
-        { role: "system", content: INSTRUCCIONES_DEL_BOT },
-        ...historial
     ];
 
     let lastError = null;
@@ -119,7 +118,6 @@ app.post('/api/chat', async (req, res) => {
     console.error("Todos los modelos de la IA fallaron:", lastError);
     res.status(500).json({ respuesta: "Disculpa, tuve un problema interno de conexión. ¿Podrías repetir eso?" });
 });
-
 // Busca esto al final de tu server.js y déjalo exactamente así:
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, '0.0.0.0', () => {

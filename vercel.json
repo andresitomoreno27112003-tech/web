@@ -8,6 +8,10 @@
   ],
   "routes": [
     {
+      "src": "/api/chat",
+      "dest": "server.js"
+    },
+    {
       "src": "/(.*)",
       "dest": "server.js"
     }
