@@ -762,12 +762,12 @@
 
             try {
                 // 4. Enviar el historial COMPLETO al backend
-               // Asegúrate de incluir el https:// completo al principio
-const response = await fetch('https://web-omega-five-51.vercel.app/api/chat', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ mensaje: mensaje })
-});
+                // Asegúrate de incluir el https:// completo al principio
+                const response = await fetch('https://web-omega-five-51.vercel.app/api/chat', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ mensaje: texto, historial: conversationHistory })
+                });
                 const data = await response.json();
                 
                 const respuestaCompleta = data.respuesta || "";

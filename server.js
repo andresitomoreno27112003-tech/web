@@ -80,19 +80,28 @@ No uses ese marcador si falta algún dato obligatorio.
 `;
 
 app.post('/api/chat', async (req, res) => {
-    // CAMBIO: Si tu frontend envía "mensaje", lo atrapamos aquí directamente
-    const mensajeUsuario = req.body.mensaje || req.body.texto; 
-    
+    const mensajeUsuario = req.body.mensaje || req.body.texto;
+    // El frontend ahora manda también "historial": el conversationHistory completo
+    const historialPrevio = Array.isArray(req.body.historial) ? req.body.historial : [];
+
+    // Reconstruimos la conversación completa para que la IA tenga contexto real
+    // (el último mensaje del usuario ya viene incluido en historialPrevio,
+    // así que no lo duplicamos)
     const mensajes = [
         { role: "system", content: INSTRUCCIONES_DEL_BOT },
-        { role: "user", content: mensajeUsuario }
+        ...historialPrevio
     ];
 
+    // Por si el frontend no llegó a mandar el historial (compatibilidad hacia atrás)
+    if (historialPrevio.length === 0 && mensajeUsuario) {
+        mensajes.push({ role: "user", content: mensajeUsuario });
+    }
+
     const MODELOS = [
-        "tencent/hy3:free",
-        "cohere/north-mini-code:free",
+        "meta-llama/llama-3.3-70b-instruct:free",
         "google/gemma-4-31b-it:free",
-        "meta-llama/llama-3.2-3b-instruct:free"
+        "tencent/hy3:free",
+        "openai/gpt-oss-20b:free"
     ];
 
     let lastError = null;
