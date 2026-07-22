@@ -1,11 +1,15 @@
 const express = require('express');
 const cors = require('cors');
+const path = require('path');
 const { OpenAI } = require('openai');
 require('dotenv').config();
 
 const app = express();
 app.use(cors());
 app.use(express.json());
+
+// Sirve index.html, las imágenes y demás archivos estáticos de esta misma carpeta
+app.use(express.static(path.join(__dirname)));
 
 // Configuramos para usar OpenRouter (¡Gratis y libre!)
 const apiKeyUsada = process.env.OPENROUTER_API_KEY || process.env.OPENAI_API_KEY;
@@ -127,6 +131,11 @@ app.post('/api/chat', async (req, res) => {
     console.error("Todos los modelos de la IA fallaron:", lastError);
     res.status(500).json({ respuesta: "Disculpa, tuve un problema interno de conexión. ¿Podrías repetir eso?" });
 });
+// Cualquier otra ruta que no sea /api/chat ni un archivo estático conocido, muestra index.html
+app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, 'index.html'));
+});
+
 // Busca esto al final de tu server.js y déjalo exactamente así:
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, '0.0.0.0', () => {
