@@ -132,7 +132,8 @@ app.post('/api/chat', async (req, res) => {
     res.status(500).json({ respuesta: "Disculpa, tuve un problema interno de conexión. ¿Podrías repetir eso?" });
 });
 // Cualquier otra ruta que no sea /api/chat ni un archivo estático conocido, muestra index.html
-app.get('*', (req, res) => {
+// (usamos middleware sin patrón de ruta porque Express 5 ya no acepta '*' como comodín simple)
+app.use((req, res) => {
     res.sendFile(path.join(__dirname, 'index.html'));
 });
 
