@@ -11,11 +11,15 @@ app.use(express.json());
 // Sirve index.html, las imágenes y demás archivos estáticos de esta misma carpeta
 app.use(express.static(path.join(__dirname)));
 
-// Configuramos para usar OpenRouter (¡Gratis y libre!)
-const apiKeyUsada = process.env.OPENROUTER_API_KEY || process.env.OPENAI_API_KEY;
-const openai = new OpenAI({
+// Cliente principal: OpenAI directo (confiable, económico)
+const openaiDirecto = new OpenAI({
+    apiKey: process.env.OPENAI_API_KEY
+});
+
+// Cliente de respaldo: OpenRouter (modelos gratuitos, por si el principal falla)
+const openrouter = new OpenAI({
     baseURL: "https://openrouter.ai/api/v1",
-    apiKey: apiKeyUsada
+    apiKey: process.env.OPENROUTER_API_KEY || process.env.OPENAI_API_KEY
 });
 
 const INSTRUCCIONES_DEL_BOT = `
@@ -101,29 +105,42 @@ app.post('/api/chat', async (req, res) => {
         mensajes.push({ role: "user", content: mensajeUsuario });
     }
 
-    const MODELOS = [
-        "meta-llama/llama-3.3-70b-instruct:free",
-        "google/gemma-4-31b-it:free",
-        "tencent/hy3:free",
-        "openai/gpt-oss-20b:free"
+    // Detecta respuestas "alucinadas" con texto corrupto o mezclado con otros
+    // alfabetos que no pedimos (bengalí, cirílico, chino, japonés, etc.)
+    function respuestaValida(texto) {
+        if (!texto || texto.trim().length < 3) return false;
+        const scriptExtrano = /[\u0980-\u09FF\u0900-\u097F\u0400-\u04FF\u4E00-\u9FFF\u3040-\u30FF]/;
+        return !scriptExtrano.test(texto);
+    }
+
+    // Orden de intentos: primero el modelo de pago confiable, luego respaldos gratuitos
+    const INTENTOS = [
+        { client: openaiDirecto, model: "gpt-4o-mini" },
+        { client: openrouter, model: "meta-llama/llama-3.3-70b-instruct:free" },
+        { client: openrouter, model: "google/gemma-4-31b-it:free" },
+        { client: openrouter, model: "openai/gpt-oss-20b:free" }
     ];
 
     let lastError = null;
 
-    for (const model of MODELOS) {
+    for (const intento of INTENTOS) {
         try {
-            console.log(`Intentando conectar con modelo: ${model}...`);
-            const response = await openai.chat.completions.create({
-                model: model,
+            console.log(`Intentando conectar con modelo: ${intento.model}...`);
+            const response = await intento.client.chat.completions.create({
+                model: intento.model,
                 messages: mensajes,
             });
 
-            if (response && response.choices && response.choices[0] && response.choices[0].message) {
-                console.log(`¡Éxito con el modelo ${model}!`);
-                return res.json({ respuesta: response.choices[0].message.content });
+            const contenido = response?.choices?.[0]?.message?.content;
+
+            if (contenido && respuestaValida(contenido)) {
+                console.log(`¡Éxito con el modelo ${intento.model}!`);
+                return res.json({ respuesta: contenido });
+            } else if (contenido) {
+                console.warn(`Respuesta descartada por texto corrupto (modelo ${intento.model}):`, contenido.slice(0, 100));
             }
         } catch (error) {
-            console.error(`Fallo con el modelo ${model}:`, error.message || error);
+            console.error(`Fallo con el modelo ${intento.model}:`, error.message || error);
             lastError = error;
         }
     }

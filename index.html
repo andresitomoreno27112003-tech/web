@@ -25,10 +25,19 @@
             --shadow-lg: 0 20px 25px -5px rgba(15, 52, 37, 0.12), 0 10px 10px -5px rgba(15, 52, 37, 0.06);
         }
 
+        html {
+            overflow-x: hidden;
+            width: 100%;
+        }
+
         * { 
             box-sizing: border-box;
             margin: 0;
             padding: 0;
+        }
+
+        img {
+            max-width: 100%;
         }
 
        body {
@@ -75,9 +84,6 @@
             font-weight: 700;
             margin-bottom: 8px;
             letter-spacing: -0.5px;
-            display: inline-flex;
-            align-items: center;
-            gap: 12px;
             text-shadow: 0 2px 4px rgba(0,0,0,0.15);
         }
 
@@ -623,22 +629,22 @@
             { id: "rosa", categoria: "flores", nombre: "Rosa", precio: 12, desc: "Paquete de rosas clásicas premium. El símbolo universal del amor.", img: "https://wallpapers.com/images/hd/beautiful-roses-pictures-4000-x-2667-pmxjpbnlgh3y5wo3.jpg" },
             { id: "margarita", categoria: "flores", nombre: "Margarita", precio: 6, desc: "Ramillete de alegres margaritas blancas con centros dorados muy radiantes.", img: "https://images.unsplash.com/photo-1560717789-0ac7c58ac90a?w=500" },
             { id: "astromelia", categoria: "flores", nombre: "Astromelia", precio: 3, desc: "Lirios de campo coloridos y vistosos. Excelente duración en jarrón.", img: "https://www.floresdeocoa.cl/cdn/shop/products/740.jpg?v=1602636582&width=1701" },
-            { id: "rusco", categoria: "follajes", nombre: "Rusco", precio: 3, desc: "Hojas verdes intensas y brillantes de alta durabilidad, base de arreglos.", img: "https://www.comercializadoraalameda.com/wp-content/uploads/2022/11/WhatsApp-Image-2024-11-20-at-11.44.39-AM.jpeg" },
+            { id: "rusco", categoria: "follajes", nombre: "Rusco", precio: 3, desc: "Hojas verdes intensas y brillantes de alta durabilidad, base de arreglos.", img: "assets/rusco.jpg" },
             { id: "helecho-cuero", categoria: "follajes", nombre: "Helecho cuero", precio: 3, desc: "Helecho de gran textura y cuerpo, ideal para dar presencia y volumen.", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRJQ1sV0xVMsSS4GiDz5vlw-8FKd-ThleFHJbaapNvpm3mDcerHCoCNohnC&s=10" },
             { id: "rosa-bebe", categoria: "flores", nombre: "Rosa bebé", precio: 8, desc: "Mini ramilletes de rosas delicadas de botón pequeño en colores suaves.", img: "https://image.made-in-china.com/202f0j00ozrcHgPsOGbL/80-200cm-Baby-Seeding-Rose-Flower-Tree-Bonsai-Shipping-Garden-Live-Plant-Middle-Seedling-Garden-Rosa.webp" },
             { id: "yitson", categoria: "follajes", nombre: "Yitson (Gipso)", precio: 8, desc: "Diminutas flores blancas que dan un efecto nuboso y romántico a los ramos.", img: "https://www.infoagro.com/documentos/images/1298_cultivo_paniculata.jpg" },
             { id: "pino", categoria: "follajes", nombre: "Pino", precio: 1, desc: "Ramilletes de pino verde. Se ofrece por bulto a $10 o paquete individual a $1.", img: "https://www.honduras.com/wp-content/uploads/2023/05/dia-del-arbol-en-Honduras.jpg", extraInfo: "Bulto: $10 | Paquete: $1" },
             { id: "girasol", categoria: "flores", nombre: "Girasol", precio: 6, desc: "Flor radiante de pétalos amarillos y gran tamaño que transmite luz y alegría.", img: "https://images.unsplash.com/photo-1597848212624-a19eb35e2651?w=500" },
-            { id: "hiedra", categoria: "follajes", nombre: "Hiedra / Yedra", precio: 3, desc: "Follaje colgante con hojas elegantes de forma estrellada muy natural.", img: "https://plantas.florpedia.com/images/plantas-trepadoras-yedra.jpg?phpMyAdmin=RTRRHfA2I9v%2CQw0gg%2CdyQfi11e6" },
+            { id: "hiedra", categoria: "follajes", nombre: "Hiedra / Yedra", precio: 3, desc: "Follaje colgante con hojas elegantes de forma estrellada muy natural.", img: "assets/hiedra.jpg" },
             { id: "gerbera", categoria: "flores", nombre: "Gerbera", precio: 10, desc: "Flores simétricas gigantes de colores intensos, alegres y muy modernos.", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT7v4rqTD1TprObezTx1VrW5MJQ1zRWyDbkzbyZq1uLOh69n9vZHUBgr3UJ&s=10" },
             { id: "clavel", categoria: "flores", nombre: "Clavel", precio: 8, desc: "Flores clásicas de pétalos ondulados muy compactos y excelente aroma.", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRsve0a3bI17uPDh7QRq_OUXmwVzXRvvIrmNSWYrONqaraigjcjcqCRe1A&s=10" },
             { id: "aves-del-paraiso", categoria: "flores", nombre: "Aves de paraíso", precio: 4, desc: "Flores tropicales de gran tamaño inspiradas en el ave exótica del mismo nombre.", img: "https://www.picturethisai.com/image-handle/website_cmsname/image/1080/154043219770867749.jpeg?x-oss-process=image/format,webp/resize,s_800&v=1.0" },
             { id: "calas", categoria: "flores", nombre: "Calas", precio: 4, desc: "Lirios estilizados de aspecto puro y curvas suaves muy distinguidas.", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSaIZZ4sGM9o_IIcMyWQgvRZRL0UtRX9UQ89hQJ8RpmRCkrfe6SzxaHwWB-&s=10" },
-            { id: "nido-de-amor", categoria: "follajes", nombre: "Nido de amor", precio: 5, desc: "Follaje tupido de hojas redondas y compactas de hermoso color verde.", img: "https://images.unsplash.com/photo-1463936575829-25148e1db1b8?w=500" },
+            { id: "nido-de-amor", categoria: "follajes", nombre: "Nido de amor", precio: 5, desc: "Follaje tupido de hojas redondas y compactas de hermoso color verde.", img: "assets/nido-de-amor.jpg" },
             { id: "estatis", categoria: "flores", nombre: "Estatis", precio: 3, desc: "Flores naturales de tonos morados que mantienen su color incluso tras secarse.", img: "https://mullerseeds.com/app/uploads/2021/09/LI-3699-05.jpg" },
             { id: "nardo", categoria: "flores", nombre: "Nardo", precio: 7, desc: "Varas con hermosas flores blancas que destacan por su exquisita fragancia.", img: "https://lacasadellabrador.com/wp-content/uploads/2025/12/Tuberculos-de-Nardo-Flores.jpg" },
             { id: "helecho-comun", categoria: "follajes", nombre: "Helecho", precio: 1, desc: "Follaje de helecho verde clásico, ideal como relleno básico de volumen.", img: "https://blog.dutch-bulbs.com/wp-content/uploads/2024/08/guide-for-ferns.jpg" },
-            { id: "pino-limon", categoria: "follajes", nombre: "Pino limón", precio: 2, desc: "Pino ornamental con un agradable y fresco aroma cítrico y color verde-lima.", img: "https://viveroverdevida.com.ar/wp-content/uploads/2022/09/Pino-Lemon.jpg" },
+            { id: "pino-limon", categoria: "follajes", nombre: "Pino limón", precio: 2, desc: "Pino ornamental con un agradable y fresco aroma cítrico y color verde-lima.", img: "assets/pino-limon.jpg" },
             { id: "agapantos", categoria: "flores", nombre: "Agapantos", precio: 3, desc: "Bellas inflorescencias esféricas de flores en color azul violáceo.", img: "https://upload.wikimedia.org/wikipedia/commons/3/3e/Purple_Agapantha.JPG" },
             { id: "pinopios", categoria: "follajes", nombre: "Pinopios", precio: 6, desc: "Se caracterizan por su forma redonda y esponjosa, con pequeños pétalos y largos pistilos que sobresalen dándoles un aspecto exótico y moderno.", img: "https://m.media-amazon.com/images/I/81nIrAFuJXL._AC_UF350,350_QL80_.jpg" }
         ];
@@ -762,12 +768,12 @@
 
             try {
                 // 4. Enviar el historial COMPLETO al backend
-                // Asegúrate de incluir el https:// completo al principio
-                const response = await fetch('https://web-omega-five-51.vercel.app/api/chat', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ mensaje: texto, historial: conversationHistory })
-                });
+               // Asegúrate de incluir el https:// completo al principio
+const response = await fetch('https://web-omega-five-51.vercel.app/api/chat', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ mensaje: mensaje })
+});
                 const data = await response.json();
                 
                 const respuestaCompleta = data.respuesta || "";

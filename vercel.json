@@ -5,7 +5,7 @@
       "src": "server.js",
       "use": "@vercel/node",
       "config": {
-        "includeFiles": ["index.html", "*.jpg", "*.png", "*.jpeg", "*.webp"]
+        "includeFiles": ["index.html", "*.jpg", "*.png", "*.jpeg", "*.webp", "assets/**"]
       }
     }
   ],
