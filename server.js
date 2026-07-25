@@ -12,15 +12,19 @@ app.use(express.json());
 app.use(express.static(path.join(__dirname)));
 
 // Cliente único: OpenRouter (100% gratis, sin tarjeta ni costo)
-// Usamos una key de relleno si falta la variable de entorno, así el servidor
-// arranca igual y solo falla ESA llamada puntual (con un error claro en los
-// logs), en vez de tumbar toda la página.
+// Usamos .trim() por si la clave viene con espacios o saltos de línea de más
+// (algo común al copiar y pegar en el panel de Vercel).
+const claveOpenRouter = (process.env.OPENROUTER_API_KEY || "").trim();
 const openrouter = new OpenAI({
     baseURL: "https://openrouter.ai/api/v1",
-    apiKey: process.env.OPENROUTER_API_KEY || "sin-configurar"
+    apiKey: claveOpenRouter || "sin-configurar"
 });
 
-if (!process.env.OPENROUTER_API_KEY) {
+// Log temporal de diagnóstico (no expone la clave completa, solo su longitud
+// y los primeros/últimos caracteres) — bórralo una vez que todo funcione bien.
+console.log(`🔑 OPENROUTER_API_KEY: longitud=${claveOpenRouter.length}, empieza="${claveOpenRouter.slice(0, 6)}", termina="${claveOpenRouter.slice(-4)}"`);
+
+if (!claveOpenRouter) {
     console.warn("⚠️ Falta la variable de entorno OPENROUTER_API_KEY en Vercel.");
 }
 
