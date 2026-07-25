@@ -11,23 +11,15 @@ app.use(express.json());
 // Sirve index.html, las imágenes y demás archivos estáticos de esta misma carpeta
 app.use(express.static(path.join(__dirname)));
 
-// Cliente principal: OpenAI directo (confiable, económico)
-// Usamos una key de relleno ("sin-configurar") si falta la variable de entorno,
-// así el servidor arranca igual y solo falla ESA llamada puntual (con un error
-// claro en los logs), en vez de tumbar toda la página.
-const openaiDirecto = new OpenAI({
-    apiKey: process.env.OPENAI_API_KEY || "sin-configurar"
-});
-
-// Cliente de respaldo: OpenRouter (modelos gratuitos, por si el principal falla)
+// Cliente único: OpenRouter (100% gratis, sin tarjeta ni costo)
+// Usamos una key de relleno si falta la variable de entorno, así el servidor
+// arranca igual y solo falla ESA llamada puntual (con un error claro en los
+// logs), en vez de tumbar toda la página.
 const openrouter = new OpenAI({
     baseURL: "https://openrouter.ai/api/v1",
-    apiKey: process.env.OPENROUTER_API_KEY || process.env.OPENAI_API_KEY || "sin-configurar"
+    apiKey: process.env.OPENROUTER_API_KEY || "sin-configurar"
 });
 
-if (!process.env.OPENAI_API_KEY) {
-    console.warn("⚠️ Falta la variable de entorno OPENAI_API_KEY en Vercel.");
-}
 if (!process.env.OPENROUTER_API_KEY) {
     console.warn("⚠️ Falta la variable de entorno OPENROUTER_API_KEY en Vercel.");
 }
@@ -123,12 +115,15 @@ app.post('/api/chat', async (req, res) => {
         return !scriptExtrano.test(texto);
     }
 
-    // Orden de intentos: primero el modelo de pago confiable, luego respaldos gratuitos
+    // Orden de intentos: primero el enrutador automático gratis de OpenRouter
+    // (openrouter/free elige por sí solo cuál modelo gratis está disponible en
+    // este momento, así que no se rompe cuando un modelo puntual deja de existir),
+    // y si por algo falla, probamos con nombres de modelos gratis conocidos.
     const INTENTOS = [
-        { client: openaiDirecto, model: "gpt-4o-mini" },
+        { client: openrouter, model: "openrouter/free" },
         { client: openrouter, model: "meta-llama/llama-3.3-70b-instruct:free" },
         { client: openrouter, model: "google/gemma-4-31b-it:free" },
-        { client: openrouter, model: "openai/gpt-oss-20b:free" }
+        { client: openrouter, model: "qwen/qwen3-next-80b-a3b-instruct:free" }
     ];
 
     let lastError = null;
