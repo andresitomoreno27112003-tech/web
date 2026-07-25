@@ -94,6 +94,9 @@ No uses ese marcador si falta algún dato obligatorio.
 `;
 
 app.post('/api/chat', async (req, res) => {
+    // Log temporal de diagnóstico en CADA petición (no expone la clave completa)
+    console.log(`🔑 [en cada request] OPENROUTER_API_KEY: longitud=${claveOpenRouter.length}, empieza="${claveOpenRouter.slice(0, 6)}", termina="${claveOpenRouter.slice(-4)}"`);
+
     const mensajeUsuario = req.body.mensaje || req.body.texto;
     // El frontend ahora manda también "historial": el conversationHistory completo
     const historialPrevio = Array.isArray(req.body.historial) ? req.body.historial : [];
