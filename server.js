@@ -12,15 +12,25 @@ app.use(express.json());
 app.use(express.static(path.join(__dirname)));
 
 // Cliente principal: OpenAI directo (confiable, económico)
+// Usamos una key de relleno ("sin-configurar") si falta la variable de entorno,
+// así el servidor arranca igual y solo falla ESA llamada puntual (con un error
+// claro en los logs), en vez de tumbar toda la página.
 const openaiDirecto = new OpenAI({
-    apiKey: process.env.OPENAI_API_KEY
+    apiKey: process.env.OPENAI_API_KEY || "sin-configurar"
 });
 
 // Cliente de respaldo: OpenRouter (modelos gratuitos, por si el principal falla)
 const openrouter = new OpenAI({
     baseURL: "https://openrouter.ai/api/v1",
-    apiKey: process.env.OPENROUTER_API_KEY || process.env.OPENAI_API_KEY
+    apiKey: process.env.OPENROUTER_API_KEY || process.env.OPENAI_API_KEY || "sin-configurar"
 });
+
+if (!process.env.OPENAI_API_KEY) {
+    console.warn("⚠️ Falta la variable de entorno OPENAI_API_KEY en Vercel.");
+}
+if (!process.env.OPENROUTER_API_KEY) {
+    console.warn("⚠️ Falta la variable de entorno OPENROUTER_API_KEY en Vercel.");
+}
 
 const INSTRUCCIONES_DEL_BOT = `
 Eres el asistente virtual de 'Compra y Venta de Flores Calzones', un comercio venezolano de flores frescas cultivadas en Bailadores y La Mesa de Esnujaque. Tu objetivo es guiar al cliente de manera atenta y servicial para registrar su pedido de flores, despachado desde Valera, y coordinar el despacho a Barquisimeto, Estado Lara.
